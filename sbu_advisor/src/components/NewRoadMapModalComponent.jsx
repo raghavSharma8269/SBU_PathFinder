@@ -10,6 +10,7 @@ const NewRoadMapModalComponent = ({ onClose }) => {
   const [skills, setSkills] = useState("");
   const [timeCommitment, setTimeCommitment] = useState("");
   const [additionalContext, setAdditionalContext] = useState("");
+  const [availableSemesters, setAvailableSemesters] = useState("");
 
   useEffect(() => {
     setIsVisible(true);

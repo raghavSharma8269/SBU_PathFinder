@@ -19,7 +19,7 @@ const RoadMapCard = ({ title, year, concentration, timeline, onClick }) => {
         cursor: "pointer",
       }}
     >
-      {/* Gradient glow effect (reduced) */}
+      {/* Gradient glow effect */}
       <div
         style={{
           position: "absolute",
@@ -27,9 +27,9 @@ const RoadMapCard = ({ title, year, concentration, timeline, onClick }) => {
           left: "-2px",
           right: "-2px",
           bottom: "-2px",
-          background: "linear-gradient(90deg, #ff4d4d, #ff9900, #ff4d4d)",
+          background: "#900",
           borderRadius: "16px",
-          opacity: 0.2,
+          opacity: 1,
           filter: "blur(10px)",
           transition: "opacity 0.5s, transform 0.5s",
         }}
