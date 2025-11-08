@@ -7,7 +7,13 @@ const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden flex flex-col items-center py-12">
+    <div
+      className="relative w-full min-h-screen overflow-hidden flex flex-col items-center py-12"
+      style={{
+        background:
+          "linear-gradient(214deg, rgba(153, 0, 0, 1) 18%, rgba(0, 0, 0, 1) 98%, rgba(0, 0, 0, 1) 81%, rgba(0, 0, 0, 1) 100%)",
+      }}
+    >
       <HomePageHeaderComponent />
       <div className="w-full flex justify-start">
         <button
