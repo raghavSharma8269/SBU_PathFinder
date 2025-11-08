@@ -1,8 +1,12 @@
 import { Target, Calendar, TrendingUp, Sparkles } from "lucide-react";
 
-const RoadMapCard = () => {
+const RoadMapCard = ({ title, year, concentration, timeline, onClick }) => {
   const handleClick = () => {
-    console.log("Roadmap card clicked!");
+    if (onClick) {
+      onClick();
+    } else {
+      console.log(`${title} card clicked!`);
+    }
   };
 
   return (
@@ -25,8 +29,8 @@ const RoadMapCard = () => {
           bottom: "-2px",
           background: "linear-gradient(90deg, #ff4d4d, #ff9900, #ff4d4d)",
           borderRadius: "16px",
-          opacity: 0.2, // reduced from 0.4
-          filter: "blur(10px)", // reduced blur
+          opacity: 0.2,
+          filter: "blur(10px)",
           transition: "opacity 0.5s, transform 0.5s",
         }}
       />
@@ -87,7 +91,7 @@ const RoadMapCard = () => {
                   color: "rgba(255,255,255,0.95)",
                 }}
               >
-                Roadmap Title
+                {title}
               </h3>
             </div>
             <div
@@ -106,7 +110,7 @@ const RoadMapCard = () => {
                   color: "rgba(255,255,255,0.95)",
                 }}
               >
-                Year 2
+                {year}
               </span>
             </div>
           </div>
@@ -130,7 +134,7 @@ const RoadMapCard = () => {
             >
               <Target style={{ width: "16px", height: "16px" }} />
               <p style={{ fontSize: "14px", fontWeight: 500 }}>
-                Full Stack Developer
+                {concentration}
               </p>
             </div>
             <div
@@ -142,9 +146,7 @@ const RoadMapCard = () => {
               }}
             >
               <Calendar style={{ width: "16px", height: "16px" }} />
-              <p style={{ fontSize: "14px", fontWeight: 500 }}>
-                4 Years Timeline
-              </p>
+              <p style={{ fontSize: "14px", fontWeight: 500 }}>{timeline}</p>
             </div>
           </div>
         </div>
