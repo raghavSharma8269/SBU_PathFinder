@@ -15,26 +15,46 @@ const HomePage = () => {
       }}
     >
       <HomePageHeaderComponent />
-      <div className="w-full flex justify-start">
+
+      {/* Container for button + cards aligned to left */}
+      <div className="w-full max-w-[1400px] flex flex-col items-start px-12">
         <button
-          className="px-6 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
-          style={{
-            padding: "20px",
-            marginBottom: "30px",
-            marginLeft: "70px",
-          }}
           onClick={() => setIsModalOpen(true)}
+          style={{
+            padding: "16px 24px",
+            fontSize: "16px",
+            fontWeight: 500,
+            textTransform: "capitalize",
+            color: "#fff",
+            background: "black",
+            border: "none",
+            borderRadius: "12px",
+            cursor: "pointer",
+            transition: "all 0.3s ease",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+            marginBottom: "24px",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.05)";
+            e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.35)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
+          }}
         >
           + Create New Roadmap
         </button>
+
+        <div className="grid grid-cols-4 gap-8 mt-8 w-full">
+          <RoadMapCardComponent />
+          <RoadMapCardComponent />
+          <RoadMapCardComponent />
+          <RoadMapCardComponent />
+          <RoadMapCardComponent />
+        </div>
       </div>
-      <div className="grid grid-cols-4 gap-8">
-        <RoadMapCardComponent />
-        <RoadMapCardComponent />
-        <RoadMapCardComponent />
-        <RoadMapCardComponent />
-        <RoadMapCardComponent />
-      </div>
+
       {isModalOpen && (
         <NewRoadMapModalComponent onClose={() => setIsModalOpen(false)} />
       )}

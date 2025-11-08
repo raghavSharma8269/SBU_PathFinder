@@ -1,10 +1,8 @@
-// NewRoadMapModalComponent.jsx
 import React, { useState, useEffect } from "react";
 
 const NewRoadMapModalComponent = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Input states (start empty)
   const [targetRole, setTargetRole] = useState("");
   const [currentYear, setCurrentYear] = useState("");
   const [targetTimeline, setTargetTimeline] = useState("");
@@ -35,14 +33,18 @@ const NewRoadMapModalComponent = ({ onClose }) => {
     handleClose();
   };
 
+  // Common input style
   const inputStyle = {
     width: "100%",
     padding: "10px",
     fontSize: "14px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
+    borderRadius: "8px",
+    border: "1px solid rgba(255,255,255,0.3)",
+    backgroundColor: "rgba(255,255,255,0.05)",
+    color: "#fff",
     outline: "none",
     marginBottom: "12px",
+    backdropFilter: "blur(8px)",
   };
 
   const labelStyle = {
@@ -50,12 +52,35 @@ const NewRoadMapModalComponent = ({ onClose }) => {
     marginBottom: "5px",
     fontSize: "14px",
     fontWeight: "bold",
+    color: "#fff",
   };
 
   const textareaStyle = {
     ...inputStyle,
     height: "100px",
     resize: "vertical",
+  };
+
+  // Button style function
+  const gradientButtonStyle = (gradient) => ({
+    padding: "10px 16px",
+    borderRadius: "10px",
+    border: "none",
+    background: gradient,
+    color: "#fff",
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+  });
+
+  const handleHover = (e) => {
+    e.currentTarget.style.transform = "scale(1.05)";
+    e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.35)";
+  };
+
+  const handleLeave = (e) => {
+    e.currentTarget.style.transform = "scale(1)";
+    e.currentTarget.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
   };
 
   return (
@@ -66,7 +91,7 @@ const NewRoadMapModalComponent = ({ onClose }) => {
         left: 0,
         width: "100%",
         height: "100%",
-        backgroundColor: "rgba(0,0,0,0.5)",
+        background: "rgba(0,0,0,0.6)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -77,23 +102,33 @@ const NewRoadMapModalComponent = ({ onClose }) => {
     >
       <div
         style={{
-          backgroundColor: "#fff",
-          padding: "20px",
-          borderRadius: "12px",
           width: "500px",
           maxWidth: "90%",
           maxHeight: "90%",
           overflowY: "auto",
+          padding: "25px",
+          borderRadius: "16px",
+          background:
+            "linear-gradient(214deg, rgba(153,0,0,0.9) 20%, rgba(87, 10, 10, 0.9) 100%)",
+          boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
           transform: isVisible ? "translateY(0)" : "translateY(-20px)",
           transition: "transform 0.2s ease-in-out",
+          backdropFilter: "blur(20px)",
         }}
+        className="modal-scroll"
       >
         <h2
-          style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "15px" }}
+          style={{
+            fontSize: "20px",
+            fontWeight: "bold",
+            marginBottom: "20px",
+            color: "#fff",
+          }}
         >
           New Roadmap
         </h2>
 
+        {/* Inputs */}
         <label style={labelStyle}>Target Role</label>
         <input
           type="text"
@@ -156,36 +191,34 @@ const NewRoadMapModalComponent = ({ onClose }) => {
           placeholder="Interested in cybersecurity..."
         />
 
+        {/* Buttons */}
         <div
           style={{
             display: "flex",
             justifyContent: "flex-end",
-            gap: "10px",
-            marginTop: "15px",
+            gap: "12px",
+            marginTop: "20px",
           }}
         >
           <button
             onClick={handleClose}
-            style={{
-              padding: "10px 15px",
-              borderRadius: "6px",
-              border: "none",
-              backgroundColor: "#ccc",
-              cursor: "pointer",
-            }}
+            style={gradientButtonStyle(
+              "linear-gradient(214deg, rgba(80,80,80,1) 20%, rgba(40,40,40,1) 100%)"
+            )}
+            onMouseEnter={handleHover}
+            onMouseLeave={handleLeave}
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
             style={{
-              padding: "10px 15px",
-              borderRadius: "6px",
-              border: "none",
-              backgroundColor: "#007bff",
+              ...gradientButtonStyle("black"),
+              background: "#900",
               color: "#fff",
-              cursor: "pointer",
             }}
+            onMouseEnter={handleHover}
+            onMouseLeave={handleLeave}
           >
             Save
           </button>
