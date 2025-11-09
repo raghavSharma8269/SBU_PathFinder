@@ -10,36 +10,55 @@ const HomePage = () => {
   // Sample roadmap data
   const roadmaps = [
     {
+      id: "69101566769a2e1c9c2c51d3",
       title: "Backend Master",
       year: "Year 1",
       concentration: "Backend Development",
       timeline: "2 Years Timeline",
     },
     {
+      id: "691012924b9923b8d8154482",
       title: "Frontend Pro",
       year: "Year 2",
       concentration: "Frontend Development",
       timeline: "1.5 Years Timeline",
     },
     {
+      id: "691012924b9923b8d8154483",
       title: "AI/ML Journey",
       year: "Year 3",
       concentration: "Machine Learning",
       timeline: "3 Years Timeline",
     },
     {
+      id: "691012924b9923b8d8154484",
       title: "Game Dev Path",
       year: "Year 2",
       concentration: "Game Development",
       timeline: "2.5 Years Timeline",
     },
     {
+      id: "691012924b9923b8d8154485",
       title: "Full Stack",
       year: "Year 4",
       concentration: "Full Stack Developer",
       timeline: "4 Years Timeline",
     },
   ];
+
+  const fetchRoadmapById = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/roadmaps/${id}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching roadmap:", error);
+      return null;
+    }
+  };
 
   return (
     <div className="relative w-full min-h-screen overflow-x-hidden flex flex-col items-center py-12 bg-white">
@@ -132,11 +151,12 @@ const HomePage = () => {
             {roadmaps.map((roadmap, index) => (
               <RoadMapCardComponent
                 key={index}
+                id={roadmap.id}
                 title={roadmap.title}
                 year={roadmap.year}
                 concentration={roadmap.concentration}
                 timeline={roadmap.timeline}
-                onClick={() => console.log(`Clicked on ${roadmap.title}`)}
+                onClick={() => fetchRoadmapById(roadmap.id)}
               />
             ))}
           </div>
