@@ -1,12 +1,8 @@
 import { Target, Calendar, TrendingUp, Sparkles } from "lucide-react";
 
-const RoadMapCard = ({ title, year, concentration, timeline, onClick }) => {
+const RoadMapCard = ({ id, title, year, concentration, timeline, fetchRoadmapById }) => {
   const handleClick = () => {
-    if (onClick) {
-      onClick();
-    } else {
-      console.log(`${title} card clicked!`);
-    }
+    fetchRoadmapById(id);
   };
 
   return (

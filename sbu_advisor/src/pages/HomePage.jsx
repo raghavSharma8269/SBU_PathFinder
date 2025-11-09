@@ -38,7 +38,7 @@ const HomePage = () => {
       timeline: "2.5 Years Timeline",
     },
     {
-      id: "691012924b9923b8d8154485",
+      id: "69101566769a2e1c9c2c51d7",
       title: "Full Stack",
       year: "Year 4",
       concentration: "Full Stack Developer",
@@ -47,6 +47,7 @@ const HomePage = () => {
   ];
 
   const fetchRoadmapById = async (id) => {
+    console.log("Fetching roadmap with ID:", id);
     try {
       const response = await fetch(`http://localhost:5001/api/roadmaps/${id}`);
       if (!response.ok) {
@@ -156,7 +157,7 @@ const HomePage = () => {
                 year={roadmap.year}
                 concentration={roadmap.concentration}
                 timeline={roadmap.timeline}
-                onClick={() => fetchRoadmapById(roadmap.id)}
+                fetchRoadmapById={fetchRoadmapById}
               />
             ))}
           </div>

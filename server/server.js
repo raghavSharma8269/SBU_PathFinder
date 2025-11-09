@@ -1,10 +1,14 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors'); // Add this import
 const roadmapsRouter = require('./routes/roadmaps');
 
 const app = express();
-app.use(express.json()); // for parsing JSON bodies
+
+app.use(cors({origin: 'http://localhost:5173'})); // Enable CORS for the React app
+
+app.use(express.json());
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
@@ -16,6 +20,5 @@ mongoose.connect(process.env.MONGO_URI, {
 // Routes
 app.use('/api/roadmaps', roadmapsRouter);
 
-// Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
