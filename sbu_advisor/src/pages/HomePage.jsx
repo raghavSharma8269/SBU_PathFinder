@@ -4,12 +4,15 @@ import HomePageHeaderComponent from "../components/HomePageHeaderComponent";
 import RoadMapCardComponent from "../components/RoadMapCardComponent";
 import NewRoadMapModalComponent from "../components/NewRoadMapModalComponent";
 import HomePageDots from "../react_bits/HomePageDots";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [roadmaps, setRoadmaps] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRoadmaps = async () => {
@@ -37,6 +40,29 @@ const HomePage = () => {
 
     fetchRoadmaps();
   }, []);
+
+  // Function: Navigate to Portal
+  const fetchRoadmapById = async (id) => {
+    // Debug: console.log("Fetching roadmap with ID:", id);
+    try {
+      const response = await fetch(`http://localhost:5001/api/roadmaps/${id}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+        const data = await response.json();
+        // Debug: console.log("Fetched roadmap data:", data);
+        goToPortal();
+        return data;
+    } catch (error) {
+      console.error("Error fetching roadmap:", error);
+      return null;
+    }
+  };
+
+  // Function to reroute to '/portal'
+  const goToPortal = () => {
+    navigate("/portal");
+  };
 
   return (
     <div className="relative w-full min-h-screen overflow-x-hidden flex flex-col items-center py-12 bg-white">
@@ -142,11 +168,12 @@ const HomePage = () => {
               {roadmaps.map((roadmap, index) => (
                 <RoadMapCardComponent
                   key={roadmap._id || index}
+                  id={roadmap.id}
                   title={roadmap.title}
                   year={roadmap.year}
                   concentration={roadmap.concentration}
                   timeline={roadmap.timeline}
-                  onClick={() => console.log(`Clicked on ${roadmap.title}`)}
+                  fetchRoadmapById={fetchRoadmapById}
                 />
               ))}
             </div>

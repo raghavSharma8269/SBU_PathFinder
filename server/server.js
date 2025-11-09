@@ -6,6 +6,7 @@ const roadmapsRouter = require("./routes/roadmaps");
 
 const app = express();
 
+// Enable CORS for the React app
 app.use(
   cors({
     origin: "http://localhost:5173",
