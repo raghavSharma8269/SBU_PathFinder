@@ -167,8 +167,8 @@ const HomePage = () => {
             >
               {roadmaps.map((roadmap, index) => (
                 <RoadMapCardComponent
-                  key={roadmap._id || index}
-                  id={roadmap.id}
+                  key={index}
+                  id={roadmap._id}
                   title={roadmap.title}
                   year={roadmap.year}
                   concentration={roadmap.concentration}
