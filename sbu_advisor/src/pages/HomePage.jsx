@@ -1,45 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import HomePageHeaderComponent from "../components/HomePageHeaderComponent";
 import RoadMapCardComponent from "../components/RoadMapCardComponent";
 import NewRoadMapModalComponent from "../components/NewRoadMapModalComponent";
-import Beams from "../react_bits/HomePageDots";
+import HomePageDots from "../react_bits/HomePageDots";
 
 const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [roadmaps, setRoadmaps] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Sample roadmap data
-  const roadmaps = [
-    {
-      title: "Backend Master",
-      year: "Year 1",
-      concentration: "Backend Development",
-      timeline: "2 Years Timeline",
-    },
-    {
-      title: "Frontend Pro",
-      year: "Year 2",
-      concentration: "Frontend Development",
-      timeline: "1.5 Years Timeline",
-    },
-    {
-      title: "AI/ML Journey",
-      year: "Year 3",
-      concentration: "Machine Learning",
-      timeline: "3 Years Timeline",
-    },
-    {
-      title: "Game Dev Path",
-      year: "Year 2",
-      concentration: "Game Development",
-      timeline: "2.5 Years Timeline",
-    },
-    {
-      title: "Full Stack",
-      year: "Year 4",
-      concentration: "Full Stack Developer",
-      timeline: "4 Years Timeline",
-    },
-  ];
+  useEffect(() => {
+    const fetchRoadmaps = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get("http://localhost:5001/api/roadmaps");
+
+        const formattedRoadmaps = response.data.map((roadmap, index) => ({
+          title: roadmap.title,
+          year: "Year 1",
+          concentration: "Backend Development",
+          timeline: "2 Years Timeline",
+          _id: roadmap._id,
+        }));
+
+        setRoadmaps(formattedRoadmaps);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching roadmaps:", err);
+        setError("Failed to load roadmaps");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRoadmaps();
+  }, []);
 
   return (
     <div className="relative w-full min-h-screen overflow-x-hidden flex flex-col items-center py-12 bg-white">
@@ -54,7 +51,7 @@ const HomePage = () => {
           zIndex: 0,
         }}
       >
-        <Beams
+        <HomePageDots
           dotSize={5}
           gap={15}
           baseColor="black"
@@ -119,27 +116,48 @@ const HomePage = () => {
             + Create New Roadmap
           </button>
 
+          {/* Loading State */}
+          {loading && (
+            <div style={{ fontSize: "16px", color: "#666" }}>
+              Loading roadmaps...
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && (
+            <div style={{ fontSize: "16px", color: "#900" }}>{error}</div>
+          )}
+
           {/* Roadmap Cards Grid */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-              gap: "28px",
-              width: "100%",
-              justifyItems: "start",
-            }}
-          >
-            {roadmaps.map((roadmap, index) => (
-              <RoadMapCardComponent
-                key={index}
-                title={roadmap.title}
-                year={roadmap.year}
-                concentration={roadmap.concentration}
-                timeline={roadmap.timeline}
-                onClick={() => console.log(`Clicked on ${roadmap.title}`)}
-              />
-            ))}
-          </div>
+          {!loading && !error && (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                gap: "28px",
+                width: "100%",
+                justifyItems: "start",
+              }}
+            >
+              {roadmaps.map((roadmap, index) => (
+                <RoadMapCardComponent
+                  key={roadmap._id || index}
+                  title={roadmap.title}
+                  year={roadmap.year}
+                  concentration={roadmap.concentration}
+                  timeline={roadmap.timeline}
+                  onClick={() => console.log(`Clicked on ${roadmap.title}`)}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!loading && !error && roadmaps.length === 0 && (
+            <div style={{ fontSize: "16px", color: "#666" }}>
+              No roadmaps yet. Create your first one!
+            </div>
+          )}
         </div>
       </div>
 
