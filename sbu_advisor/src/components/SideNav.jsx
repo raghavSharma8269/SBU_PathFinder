@@ -207,7 +207,8 @@ export default function SideNav({ excludeIds, onUnscheduleCourse }) {
           const dragPayload = JSON.stringify({
             id: c.id,
             name: c.name,
-            credits: (typeof c.credits === 'string' ? parseInt(c.credits) : c.credits) ?? 0
+            credits: (typeof c.credits === 'string' ? parseInt(c.credits) : c.credits) ?? 0,
+            source: 'catalog'
           });
           return (
             <article
@@ -216,8 +217,10 @@ export default function SideNav({ excludeIds, onUnscheduleCourse }) {
               draggable
               aria-grabbed={false}
               onDragStart={(e) => {
-                e.dataTransfer.effectAllowed = 'copy';
+                e.dataTransfer.effectAllowed = 'copyMove';
                 e.dataTransfer.setData('application/x-course', dragPayload);
+                // Provide plain text fallback for some browsers / debugging
+                e.dataTransfer.setData('text/plain', c.id);
               }}
             >
               <div className="sn-card-left">
