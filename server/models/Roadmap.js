@@ -6,4 +6,4 @@ const RoadmapSchema = new mongoose.Schema({
   roadmap: { type: mongoose.Schema.Types.Mixed, required: true }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Roadmap', RoadmapSchema);
+module.exports = mongoose.model('Roadmap', RoadmapSchema, 'roadmaps');
