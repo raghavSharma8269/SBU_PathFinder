@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+
+const mongoose = require('mongoose');
 
 const RoadmapSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  roadmap: { type: Object, required: true },
-  createdAt: { type: Date, default: Date.now }
-});
+  roadmap: { type: mongoose.Schema.Types.Mixed, required: true }
+}, { timestamps: true });
 
-module.exports = mongoose.model("Roadmap", RoadmapSchema);
+module.exports = mongoose.model('Roadmap', RoadmapSchema);
