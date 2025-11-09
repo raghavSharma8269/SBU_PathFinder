@@ -20,21 +20,27 @@ export default function Portal() {
 
   // Lift semesters into state so drag & drop can mutate them
   const [semesters, setSemesters] = useState(() => initialSemesters);
+
+  // ADD THIS: State for roadmap title
+  const [roadmapTitle, setRoadmapTitle] = useState("Untitled Roadmap");
+
   // Persisted roadmap ID (saved in the backend). Read from localStorage if present.
   const [roadmapId, setRoadmapId] = useState(() =>
     typeof window !== "undefined" ? localStorage.getItem("roadmapId") : null
   );
 
   // If the user navigated here with a roadmap in location.state, load it into semesters
-  // Helper: map backend `roadmap.semesters` (object) or `semesters` (array/object)
-  // (helper function defined earlier)
-
   useEffect(() => {
     if (!state) return;
 
     // The Home page passes { roadmap: <roadmap document> }
     const incoming = state.roadmap;
     if (!incoming) return;
+
+    // ADD THIS: Extract and set the title from the roadmap
+    if (incoming.title) {
+      setRoadmapTitle(incoming.title);
+    }
 
     // Map backend semesters (object) -> frontend array shape, or accept array as-is
     const mapped = mapBackendSemestersToArray(incoming);
@@ -63,7 +69,8 @@ export default function Portal() {
   const mapBackendSemestersToArray = (doc) => {
     if (!doc) return null;
 
-    const semSource = (doc.roadmap && doc.roadmap.semesters) || doc.semesters || null;
+    const semSource =
+      (doc.roadmap && doc.roadmap.semesters) || doc.semesters || null;
 
     // If already an array, return as-is (assume proper shape)
     if (Array.isArray(semSource)) return semSource;
@@ -80,7 +87,10 @@ export default function Portal() {
         why: c.why || c.note || "",
       }));
 
-      const totalCredits = courses.reduce((s, c) => s + (Number(c.credits) || 0), 0);
+      const totalCredits = courses.reduce(
+        (s, c) => s + (Number(c.credits) || 0),
+        0
+      );
 
       return {
         id: key,
@@ -115,7 +125,11 @@ export default function Portal() {
       courses ? courses.reduce((s, c) => s + (Number(c.credits) || 0), 0) : 0;
 
     semesters.forEach((sem) => {
-      const key = sem.id || sem.key || sem.title?.toLowerCase().replace(/\s+/g, "_") || Date.now().toString();
+      const key =
+        sem.id ||
+        sem.key ||
+        sem.title?.toLowerCase().replace(/\s+/g, "_") ||
+        Date.now().toString();
       semestersObject[key] = {
         // keep courses, projects, skills, milestones if present
         courses: (sem.courses || []).map((c) => ({
@@ -164,7 +178,7 @@ export default function Portal() {
         alert("Roadmap updated successfully.");
       } else {
         // Create a new roadmap in the backend. Use a sensible title derived from the UI.
-        const title = "SWE Track - Full-Stack Development";
+        const title = roadmapTitle || "SWE Track - Full-Stack Development";
         const res = await fetch(`${API_BASE}/api/roadmaps`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -261,6 +275,7 @@ export default function Portal() {
         onSaveRoadmap={handleSaveRoadmap}
         track="SWE Track"
         focus="Full-Stack Development"
+        title={roadmapTitle}
       />
       <div className="portal-content">
         <SideNav

@@ -1,31 +1,32 @@
 // Imports: Dependencies
-import { useNavigate } from 'react-router-dom'
-import ShinyText from '../react_bits/ShinyText/ShinyText'
+import { useNavigate } from "react-router-dom";
+import ShinyText from "../react_bits/ShinyText/ShinyText";
 
 // Imports: CSS
-import 'bootstrap-icons/font/bootstrap-icons.css'
-import './ContentHeader.css'
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "./ContentHeader.css";
 
 // Imports: Assets
-import sbuLogoClear from '../assets/SBU_Logo_Clear.png'
+import sbuLogoClear from "../assets/SBU_Logo_Clear.png";
 
 export default function ContentHeader({
   onNewSemester,
   onSaveRoadmap,
   showAccent = true,
-  track = 'SWE Track',
-  focus = 'Full-Stack Development'
+  track = "SWE Track",
+  focus = "Full-Stack Development",
+  title,
 }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
-    <header className={`content-header ${showAccent ? 'with-accent' : ''}`}>
-      <div className='content-header-left'>
+    <header className={`content-header ${showAccent ? "with-accent" : ""}`}>
+      <div className="content-header-left">
         {/* Back Button */}
         <button
           className="icon-button back-button"
           aria-label="Back to home"
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
         >
           <i className="bi bi-arrow-left" />
         </button>
@@ -38,21 +39,23 @@ export default function ContentHeader({
 
           <div className="titles">
             <ShinyText
-              text="StonyBrook CS AI Planner"
+              text={title}
               disabled={false}
               speed={3}
               className="title"
             />
             <div className="subtitle">
               <span>{track}</span>
-              <span className="dot" aria-hidden="true">•</span>
+              <span className="dot" aria-hidden="true">
+                •
+              </span>
               <span>{focus}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className='content-header-right'>
+      <div className="content-header-right">
         <div className="actions-group">
           {/*
           <button
@@ -65,9 +68,9 @@ export default function ContentHeader({
           </button>
           */}
           <button
-              type="button"
-              className="btn btn-primary"
-              onClick={onSaveRoadmap}
+            type="button"
+            className="btn btn-primary"
+            onClick={onSaveRoadmap}
           >
             <i className="bi bi-save" />
             <span>Save Roadmap</span>
@@ -75,5 +78,5 @@ export default function ContentHeader({
         </div>
       </div>
     </header>
-  )
+  );
 }
