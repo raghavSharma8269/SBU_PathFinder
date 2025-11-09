@@ -5,23 +5,68 @@ const Roadmap = require('../models/Roadmap');
 const roadmaps = [
   {
     title: "Backend Master",
-    roadmap: { message: "This will hold the full roadmap JSON for Backend Master." }
+    roadmap: { message: "This will hold the full roadmap JSON for Backend Master." },
+    formData: {
+            targetRole: "Backend Systems Engineer",
+            currentYear: "Junior",
+            targetTimeline: "Spring 2027",
+            completedCourses: "CSE 114, CSE 214",
+            skills: "Python, C, Git",
+            timeCommitment: "10-15 hrs/week",
+            additionalContext: ""
+        },
   },
   {
     title: "Frontend Pro",
-    roadmap: { message: "This will hold the full roadmap JSON for Frontend Pro." }
+    roadmap: { message: "This will hold the full roadmap JSON for Frontend Pro." },
+    formData: {
+        targetRole: "Frontend Engineer",
+        currentYear: "Junior",
+        targetTimeline: "Spring 2027",
+        completedCourses: "CSE 114, CSE 214",
+        skills: "Python, C, Git",
+        timeCommitment: "10-15 hrs/week",
+        additionalContext: ""
+    },
   },
   {
     title: "AI/ML Journey",
-    roadmap: { message: "This will hold the full roadmap JSON for AI/ML Journey." }
+    roadmap: { message: "This will hold the full roadmap JSON for AI/ML Journey." },
+    formData: {
+        targetRole: "ML Engineer",
+        currentYear: "Junior",
+        targetTimeline: "Spring 2027",
+        completedCourses: "CSE 114, CSE 214",
+        skills: "Python, C, Git",
+        timeCommitment: "10-15 hrs/week",
+        additionalContext: ""
+    },
   },
   {
     title: "Game Dev Path",
-    roadmap: { message: "This will hold the full roadmap JSON for Game Dev Path." }
+    roadmap: { message: "This will hold the full roadmap JSON for Game Dev Path." },
+    formData: {
+        targetRole: "Game dev Engineer",
+        currentYear: "Junior",
+        targetTimeline: "Spring 2027",
+        completedCourses: "CSE 114, CSE 214",
+        skills: "Python, C, Git",
+        timeCommitment: "10-15 hrs/week",
+        additionalContext: ""
+    },
   },
   {
     title: "Full Stack",
-    roadmap: { message: "This will hold the full roadmap JSON for Full Stack." }
+    roadmap: { message: "This will hold the full roadmap JSON for Full Stack." },
+    formData: {
+        targetRole: "full stack Engineer",
+        currentYear: "Junior",
+        targetTimeline: "Spring 2027",
+        completedCourses: "CSE 114, CSE 214",
+        skills: "Python, C, Git",
+        timeCommitment: "10-15 hrs/week",
+        additionalContext: ""
+    },
   }
 ];
 
