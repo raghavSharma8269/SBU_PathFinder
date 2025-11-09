@@ -1,6 +1,6 @@
 import { Target, Calendar, TrendingUp, Sparkles } from "lucide-react";
 
-const RoadMapCard = ({ id, title, year, concentration, timeline, fetchRoadmapById }) => {
+const RoadMapCard = ({ id, title, concentration, fetchRoadmapById }) => {
   const handleClick = () => {
     fetchRoadmapById(id);
   };
@@ -77,37 +77,18 @@ const RoadMapCard = ({ id, title, year, concentration, timeline, fetchRoadmapByI
                 }}
               >
                 <Sparkles
-                  style={{ width: "16px", height: "16px", color: "#fff" }}
+                  style={{ width: "20px", height: "20px", color: "#fff" }}
                 />
               </div>
               <h3
                 style={{
-                  fontSize: "18px",
+                  fontSize: "24px",
                   fontWeight: "bold",
                   color: "rgba(255,255,255,0.95)",
                 }}
               >
                 {title}
               </h3>
-            </div>
-            <div
-              style={{
-                padding: "4px 12px",
-                background: "rgba(255,255,255,0.15)",
-                borderRadius: "9999px",
-                border: "1px solid rgba(255,255,255,0.3)",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "12px",
-                  fontWeight: 600,
-                  color: "rgba(255,255,255,0.95)",
-                }}
-              >
-                {year}
-              </span>
             </div>
           </div>
 
@@ -128,8 +109,8 @@ const RoadMapCard = ({ id, title, year, concentration, timeline, fetchRoadmapByI
                 color: "rgba(255,255,255,0.9)",
               }}
             >
-              <Target style={{ width: "16px", height: "16px" }} />
-              <p style={{ fontSize: "14px", fontWeight: 500 }}>
+              <Target style={{ width: "18px", height: "18px" }} />
+              <p style={{ fontSize: "16px", fontWeight: 500 }}>
                 {concentration}
               </p>
             </div>
@@ -140,10 +121,7 @@ const RoadMapCard = ({ id, title, year, concentration, timeline, fetchRoadmapByI
                 gap: "6px",
                 color: "rgba(255,255,255,0.9)",
               }}
-            >
-              <Calendar style={{ width: "16px", height: "16px" }} />
-              <p style={{ fontSize: "14px", fontWeight: 500 }}>{timeline}</p>
-            </div>
+            ></div>
           </div>
         </div>
       </div>
