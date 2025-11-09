@@ -1,6 +1,6 @@
-import { Target, Calendar, TrendingUp, Sparkles } from "lucide-react";
+import { Target, Sparkles } from "lucide-react";
 
-const RoadMapCard = ({ id, title, concentration, fetchRoadmapById }) => {
+const RoadMapCard = ({ id, title, skills, fetchRoadmapById }) => {
   const handleClick = () => {
     fetchRoadmapById(id);
   };
@@ -110,18 +110,8 @@ const RoadMapCard = ({ id, title, concentration, fetchRoadmapById }) => {
               }}
             >
               <Target style={{ width: "18px", height: "18px" }} />
-              <p style={{ fontSize: "16px", fontWeight: 500 }}>
-                {concentration}
-              </p>
+              <p style={{ fontSize: "16px", fontWeight: 500 }}>{skills}</p>
             </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                color: "rgba(255,255,255,0.9)",
-              }}
-            ></div>
           </div>
         </div>
       </div>

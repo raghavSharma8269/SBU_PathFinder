@@ -20,11 +20,12 @@ const HomePage = () => {
       setLoading(true);
       const response = await axios.get("http://localhost:5001/api/roadmaps");
 
-      const formattedRoadmaps = response.data.map((roadmap, index) => ({
+      const formattedRoadmaps = response.data.map((roadmap) => ({
         title: roadmap.title,
-        year: "Year 1",
-        concentration: "Backend Development",
-        timeline: "2 Years Timeline",
+        skills:
+          roadmap.formData?.skills ||
+          roadmap.form?.skills ||
+          "No skills listed",
         _id: roadmap._id,
       }));
 
@@ -174,9 +175,7 @@ const HomePage = () => {
                   key={index}
                   id={roadmap._id}
                   title={roadmap.title}
-                  year={roadmap.year}
-                  concentration={roadmap.concentration}
-                  timeline={roadmap.timeline}
+                  skills={roadmap.skills}
                   fetchRoadmapById={fetchRoadmapById}
                 />
               ))}
