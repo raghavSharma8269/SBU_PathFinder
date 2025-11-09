@@ -54,7 +54,7 @@ export default function SemesterBoard({ semesters = [], onDropCourse }) {
               >
                 {sem.totalCredits} credits
               </span>
-              <span
+              {/* <span
                 className={`badge status ${
                   sem.courses.some((c) => c.status === "prereq-issue")
                     ? "bad"
@@ -64,7 +64,7 @@ export default function SemesterBoard({ semesters = [], onDropCourse }) {
                 {sem.courses.some((c) => c.status === "prereq-issue")
                   ? "Prereq Issue"
                   : "Valid"}
-              </span>
+              </span> */}
             </div>
           </div>
 
