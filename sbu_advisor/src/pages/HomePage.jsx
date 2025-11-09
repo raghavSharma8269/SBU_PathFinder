@@ -14,7 +14,7 @@ const HomePage = () => {
 
   const navigate = useNavigate();
 
-  // Function to fetch all roadmaps
+  // Fetch all roadmaps
   const fetchRoadmaps = async () => {
     try {
       setLoading(true);
@@ -43,16 +43,11 @@ const HomePage = () => {
     fetchRoadmaps();
   }, []);
 
-  // Function: Navigate to Portal
   const fetchRoadmapById = async (id) => {
-    // Fetch roadmap from backend and navigate to portal with the roadmap in router state
     try {
       const response = await fetch(`http://localhost:5001/api/roadmaps/${id}`);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
-      // Navigate to portal and pass roadmap data via location state so PlannerPage can load it
       navigate("/portal", { state: { roadmap: data } });
       return data;
     } catch (error) {
@@ -61,18 +56,16 @@ const HomePage = () => {
     }
   };
 
-  // Callback when a new roadmap is created
   const handleRoadmapCreated = (newRoadmap) => {
     console.log("New roadmap created:", newRoadmap);
-
-    // Navigate directly to the new roadmap
     if (newRoadmap && newRoadmap._id) {
       navigate("/portal", { state: { roadmap: newRoadmap } });
     }
   };
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col items-center py-12 bg-white">
+    <div className="relative w-full min-h-screen flex flex-col items-center py-12 bg-white overflow-x-hidden">
+      {/* Background Dots */}
       <div
         style={{
           position: "absolute",
@@ -95,7 +88,8 @@ const HomePage = () => {
           returnDuration={1.5}
         />
       </div>
-      {/* Content Layer */}
+
+      {/* Foreground Content */}
       <div
         style={{
           position: "relative",
@@ -103,29 +97,28 @@ const HomePage = () => {
           width: "100%",
         }}
       >
-        {/* Header spans full width */}
         <HomePageHeaderComponent />
 
-        {/* Container for button + cards - constrained width */}
+        {/* Main Container */}
         <div
           style={{
             width: "100%",
-            maxWidth: "1400px",
+            maxWidth: "1200px",
             margin: "0 auto",
-            padding: "0 48px",
+            padding: "0 24px",
             display: "flex",
             flexDirection: "column",
-            alignItems: "flex-start",
+            alignItems: "center",
             marginTop: "40px",
           }}
         >
+          {/* Create Button */}
           <button
             onClick={() => setIsModalOpen(true)}
             style={{
-              padding: "16px 24px",
+              padding: "14px 24px",
               fontSize: "16px",
               fontWeight: 500,
-              textTransform: "capitalize",
               color: "#fff",
               background: "black",
               border: "none",
@@ -147,14 +140,14 @@ const HomePage = () => {
             + Create New Roadmap
           </button>
 
-          {/* Loading State */}
+          {/* Loading */}
           {loading && (
             <div style={{ fontSize: "16px", color: "#666" }}>
               Loading roadmaps...
             </div>
           )}
 
-          {/* Error State */}
+          {/* Error */}
           {error && (
             <div style={{ fontSize: "16px", color: "#900" }}>{error}</div>
           )}
@@ -164,10 +157,11 @@ const HomePage = () => {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
                 gap: "28px",
+                justifyItems: "center",
+                alignItems: "center",
                 width: "100%",
-                justifyItems: "start",
               }}
             >
               {roadmaps.map((roadmap, index) => (
@@ -182,7 +176,7 @@ const HomePage = () => {
             </div>
           )}
 
-          {/* Empty State */}
+          {/* Empty */}
           {!loading && !error && roadmaps.length === 0 && (
             <div style={{ fontSize: "16px", color: "#666" }}>
               No roadmaps yet. Create your first one!
@@ -190,6 +184,8 @@ const HomePage = () => {
           )}
         </div>
       </div>
+
+      {/* Modal */}
       {isModalOpen && (
         <NewRoadMapModalComponent
           onClose={() => setIsModalOpen(false)}
