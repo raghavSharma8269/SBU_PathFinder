@@ -1,4 +1,4 @@
-# SBU CS Roadmap Generator
+# SBU PathFinder
 
 ## What It Does
 
