@@ -26,6 +26,9 @@ export default function Portal() {
   );
 
   // If the user navigated here with a roadmap in location.state, load it into semesters
+  // Helper: map backend `roadmap.semesters` (object) or `semesters` (array/object)
+  // (helper function defined earlier)
+
   useEffect(() => {
     if (!state) return;
 
@@ -33,12 +36,10 @@ export default function Portal() {
     const incoming = state.roadmap;
     if (!incoming) return;
 
-    // If the document stores its planner under `roadmap.semesters`, prefer that.
-    const incomingSemesters =
-      (incoming.roadmap && incoming.roadmap.semesters) || incoming.semesters;
-
-    if (Array.isArray(incomingSemesters) && incomingSemesters.length > 0) {
-      setSemesters(incomingSemesters);
+    // Map backend semesters (object) -> frontend array shape, or accept array as-is
+    const mapped = mapBackendSemestersToArray(incoming);
+    if (mapped) {
+      setSemesters(mapped);
     }
 
     // If the incoming doc has an _id, persist it so subsequent saves update the same record
@@ -58,6 +59,43 @@ export default function Portal() {
     }
   }, [state]);
 
+  // Helper: map backend `roadmap.semesters` (object) or `semesters` (array/object)
+  const mapBackendSemestersToArray = (doc) => {
+    if (!doc) return null;
+
+    const semSource = (doc.roadmap && doc.roadmap.semesters) || doc.semesters || null;
+
+    // If already an array, return as-is (assume proper shape)
+    if (Array.isArray(semSource)) return semSource;
+
+    if (!semSource || typeof semSource !== "object") return null;
+
+    const mapped = Object.entries(semSource).map(([key, val]) => {
+      const courses = (val.courses || []).map((c, idx) => ({
+        // keep a stable id for frontend lists
+        id: c.code || c.id || `${key}-c-${idx}`,
+        code: c.code || c.id || "",
+        name: c.name || c.title || "",
+        credits: c.credits || 0,
+        why: c.why || c.note || "",
+      }));
+
+      const totalCredits = courses.reduce((s, c) => s + (Number(c.credits) || 0), 0);
+
+      return {
+        id: key,
+        title: key,
+        courses,
+        projects: val.projects || [],
+        skills: val.skills || [],
+        milestones: val.milestones || [],
+        totalCredits,
+      };
+    });
+
+    return mapped;
+  };
+
   // Compute set of planned course IDs to hide them from the SideNav
   const plannedCourseIds = useMemo(() => {
     const ids = new Set();
@@ -70,13 +108,37 @@ export default function Portal() {
   };
 
   const handleSaveRoadmap = async () => {
-    // Prepare roadmap payload
-    const roadmapPayload = { semesters };
+    // Prepare roadmap payload: transform frontend `semesters` array into
+    // the backend shape where `roadmap.semesters` is an object keyed by semester id.
+    const semestersObject = {};
+    const computeCredits = (courses) =>
+      courses ? courses.reduce((s, c) => s + (Number(c.credits) || 0), 0) : 0;
+
+    semesters.forEach((sem) => {
+      const key = sem.id || sem.key || sem.title?.toLowerCase().replace(/\s+/g, "_") || Date.now().toString();
+      semestersObject[key] = {
+        // keep courses, projects, skills, milestones if present
+        courses: (sem.courses || []).map((c) => ({
+          code: c.code || c.id || c.code || "",
+          name: c.name || c.title || "",
+          credits: c.credits || 0,
+          why: c.why || c.note || "",
+        })),
+        projects: sem.projects || [],
+        skills: sem.skills || [],
+        milestones: sem.milestones || [],
+        totalCredits: computeCredits(sem.courses || []),
+      };
+    });
+
+    const roadmapPayload = { semesters: semestersObject };
 
     // API base - matches server/server.js (dev server runs on 5001)
     const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
     try {
+      // DEBUG: log payload before sending to server
+      console.log("Saving roadmap payload:", roadmapPayload);
       if (roadmapId) {
         // Update existing roadmap
         const res = await fetch(`${API_BASE}/api/roadmaps/${roadmapId}`, {
@@ -94,6 +156,9 @@ export default function Portal() {
         // Keep a local copy for quick reloads
         localStorage.setItem("roadmap", JSON.stringify(updated));
         console.log("Roadmap updated:", updated);
+        // Update UI: map backend semesters (object) -> frontend array shape
+        const mapped = mapBackendSemestersToArray(updated);
+        if (mapped) setSemesters(mapped);
         // Optionally notify user
         // eslint-disable-next-line no-alert
         alert("Roadmap updated successfully.");
@@ -117,7 +182,10 @@ export default function Portal() {
           setRoadmapId(created._id);
           localStorage.setItem("roadmapId", created._id);
         }
+        // Update UI from created document
         localStorage.setItem("roadmap", JSON.stringify(created));
+        const mapped = mapBackendSemestersToArray(created);
+        if (mapped) setSemesters(mapped);
         console.log("Roadmap created:", created);
         // eslint-disable-next-line no-alert
         alert("Roadmap saved to server.");

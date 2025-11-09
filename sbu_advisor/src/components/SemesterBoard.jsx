@@ -3,7 +3,7 @@ import './SemesterBoard.css';
 
 // Expected semester shape
 // {
-//   id: 'fall-2025',
+//   id: 'fall_2025',
 //   label: 'Semester 1 (Fall 2025)',
 //   courses: [ { id: 'CSE 214', name: 'Data Structures', credits: 4, status: 'prereq-issue' | 'valid' } ],
 //   totalCredits: 4

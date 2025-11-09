@@ -1,48 +1,48 @@
 [
 	{
-		"id": "fall-2025",
+		"id": "fall_2025",
 		"label": "Semester 1 (Fall 2025)",
 		"totalCredits": 0,
 		"courses": []
 	},
 	{
-		"id": "spring-2026",
+		"id": "spring_2026",
 		"label": "Semester 2 (Spring 2026)",
 		"totalCredits": 0,
 		"courses": []
 	},
 	{
-		"id": "fall-2026",
+		"id": "fall_2026",
 		"label": "Semester 3 (Fall 2026)",
 		"totalCredits": 0,
 		"courses": []
 	},
 	{
-		"id": "spring-2027",
+		"id": "spring_2027",
 		"label": "Semester 4 (Spring 2027)",
 		"totalCredits": 0,
 		"courses": []
 	},
 	{
-		"id": "fall-2027",
+		"id": "fall_2027",
 		"label": "Semester 5 (Fall 2027)",
 		"totalCredits": 0,
 		"courses": []
 	},
 	{
-		"id": "spring-2028",
+		"id": "spring_2028",
 		"label": "Semester 6 (Spring 2028)",
 		"totalCredits": 0,
 		"courses": []
 	},
 	{
-		"id": "fall-2028",
+		"id": "fall_2028",
 		"label": "Semester 7 (Fall 2028)",
 		"totalCredits": 0,
 		"courses": []
 	},
 	{
-		"id": "spring-2029",
+		"id": "spring_2029",
 		"label": "Semester 8 (Spring 2029)",
 		"totalCredits": 0,
 		"courses": []

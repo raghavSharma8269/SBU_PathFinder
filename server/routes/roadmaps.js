@@ -5,6 +5,7 @@ const Roadmap = require('../models/Roadmap');
 // Save a new roadmap JSON to MongoDB
 router.post('/', async (req, res) => {
   try {
+    console.log('Create roadmap request body:', JSON.stringify(req.body));
     const { title, roadmap } = req.body;
 
     if (!title || !roadmap) {
@@ -68,13 +69,15 @@ router.post('/:id', async (req, res) => {
 
     const { roadmap } = req.body;
 
+  console.log(`Update roadmap ${roadmapId} request body:`, JSON.stringify(req.body));
+
     if (roadmap === undefined) {
       return res.status(400).json({ error: 'Request body must include a `roadmap` field.' });
     }
 
     const updated = await Roadmap.findByIdAndUpdate(
       roadmapId,
-      { roadmap },
+      { $set: { roadmap } },
       { new: true }
     );
 
