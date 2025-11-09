@@ -1,0 +1,303 @@
+<< name: target_role, prompt: true, desc: "Target career role (e.g., 'Backend Engineer')" >>
+<< name: current_year, prompt: true, desc: "Current academic year (e.g., 'Sophomore')" >>
+<< name: target_timeline, prompt: true, desc: "When they need to achieve goal (e.g., 'Summer 2026')" >>
+<< name: completed_courses, prompt: true, desc: "Comma-separated list of completed courses (e.g., 'CSE 114, CSE 214')" >>
+<< name: skills, prompt: true, desc: "Comma-separated list of current skills (e.g., 'Python, Java, Git')" >>
+<< name: time_commitment, prompt: true, desc: "Available study time per week (e.g., '10-15 hrs/week')" >>
+<< name: additional_context, prompt: true, desc: "Any extra constraints or preferences (e.g., 'Interested in cybersecurity')" >>
+{{ doc  | name: "cs-projects.txt" }}=>{{ variable  | name: "available_projects" }}
+{{ doc  | name: "available_classes_updated.txt" }}=>{{ variable  | name: "available_classes" }}
+{{ date  | timezone: "UTC−05:00, R" }}=>{{ variable  | name: "current_date" }}
+{{ LLM  | prompt: "What SBU Computer Science courses are relevant for a << name: current_year >> student pursuing << name: target_role >>? They have completed: << name: completed_courses >>. Consider prerequisites and course sequencing. Include course codes, names, credits, descriptions, and typical semester offerings. Here are all the available courses and make sure all the courses that are marked as required are outputted/mandated: << name: available_classes, prompt: false >>" | cache: "true" }}=>{{ variable  | name: "relevant_courses" }}
+{{ LLM  | prompt: "What technical projects from the list below align with << name: target_role >>?  Include project names, URLs, difficulty levels, time estimates, and skills gained. Here is the list of available projects to choose for that prompt: << name: available_projects, prompt: false >>" | cache: "true" }}=>{{ variable  | name: "relevant_projects" }}
+{{ LLM  | prompt: "What are the skill requirements, typical course progressions, interview preparation needs, and timeline expectations for << name: target_role >> in computer science? Include both technical and soft skills." | cache: "true" }}=>{{ variable  | name: "career_requirements" }}
+{{ LLM  | prompt: "Current academic status:  << name: current_year, prompt: false >>\nTarget deadline: << name: target_timeline >>\n\nCalculate:\n1. How many semesters remain until the target deadline?\n2. What are the semester names (e.g., Fall 2025, Spring 2026)?\n3. Which semesters are critical for internship applications?\n\nOutput as: Available semesters: Fall 2025, Spring 2026, Summer 2026, etc. The current date is << name: current_date, prompt: false >> and it is november of 2025. Only output this current fall 2025 semesters and any future ones until the target deadline. " | cache: "true" }}=>{{ variable  | name: "available_semesters" }}
+{{ LLM  | prompt: "You are an expert academic advisor for Stony Brook University's CS department. Generate a semester-by-semester roadmap based on the student profile below, DO NOT INCLUDE WINTER OR SUMMER SEMESTERS:
+
+Profile:
+
+Career Goal: << name: target_role >>
+
+Current Academic Year: << name: current_year >>
+
+Target Deadline: << name: target_timeline >>
+
+Available Semesters: << name: available_semesters >>
+
+Completed Courses: << name: completed_courses >>
+
+Skills: << name: skills >>
+
+Time Commitment: << name: time_commitment >>
+
+Additional Context: << name: additional_context >>
+
+Resources:
+
+Relevant Courses: << name: relevant_courses >>
+
+Recommended Projects: << name: relevant_projects >>
+
+Career Requirements: << name: career_requirements >>
+
+Instructions:
+
+Follow prerequisites and proper course order.
+
+Respect time commitment limits (2-5 courses/semester depending on hours) and respect the additional context if there is any.
+
+Include only Fall and Spring semesters.
+
+Include 1-2 projects per semester; max 3 total projects.
+
+Include courses, projects, skills (3-5), and milestones (3-5).
+
+Provide summary (2-3 sentences) and keyInsights (3-5 points).
+
+Output:
+
+ONLY valid JSON. No markdown or extra text.
+
+Use this structure:
+
+{
+  \"summary\": \"Strategic overview here...\",
+  \"semesters\": {
+    \"fall_2025\": {
+      \"courses\": [{\"code\": \"CSE 214\", \"name\": \"Data Structures\", \"credits\": 4, \"why\": \"Explanation...\"}],
+      \"projects\": [{\"name\": \"Build Your Own Redis\", \"url\": \"https://...\", \"why\": \"Explanation...\", \"timeEstimate\": \"2-3 weeks\", \"skills\": [\"skill1\",\"skill2\"]}],
+      \"skills\": [\"Docker\", \"Git workflows\", \"Linux CLI\"],
+      \"milestones\": [\"Complete CSE 214 with B+\", \"APPLY FOR INTERNSHIPS in January\"]
+    },
+    \"spring_2026\": {
+      ... same structure ...
+    }
+  },
+  \"keyInsights\": [\"Insight 1\",\"Insight 2\",\"Insight 3\"]
+}
+
+
+Generate the roadmap now, but keep the why section and explanation brief so it all can fit in on LLM generated response ." | cache: "true" | maxTokens: "10000" }}=>{{ variable  | name: "roadmap_json" }}
+{{ LLM  | prompt: "Check if the following output is valid JSON. If not, regenerate the output with stronger emphasis on JSON-only output.\n\nOutput:\n<< name: roadmap_json, prompt: false >>. If so, rewrite each project output in the JSON should follow this format: \"projects\": [
+  {
+    \"name\": \"Build Your Own Arduino\",
+    \"url\": \"https://github.com/Build-Your-Own-X/Build-Your-Own-Arduino\",
+    \"why\": \"Hands-on project to understand microcontroller architecture and hardware interfacing.\",
+    \"timeEstimate\": \"2-3 weeks\",
+    \"skills\": [\"C programming\", \"Hardware interfacing\", \"Microcontroller basics\"]
+  }
+]. \n\n Then each course should follow this for the json: {
+  \"code\": \"CSE320\",
+  \"name\": \"Systems Fundamentals II\",
+  \"credits\": 3,
+  \"why\": \"This course covers operating systems concepts and memory management, essential for building systems-level skills needed in embedded and systems software development.\"
+}
+ Ensure the course descriptions are correct and they match with whatever descriptions are in the available " | cache: "true" }}=>{{ variable  | name: "validated_roadmap" }}
+{{ LLM  | prompt: "Fix the outputs syntax and do not give me any extra text, only raw JSON code. Follow this format for the JSON structure while keeping the information concise, here is an example: {
+  \"summary\": \"This roadmap outlines a structured path for a Computer Science student aiming for a career in software development, focusing on essential courses, projects, and skills development over four semesters.\",
+  \"semesters\": {
+    \"fall_2025\": {
+      \"courses\": [
+        {
+          \"code\": \"CSE 114\",
+          \"name\": \"Introduction to Object-Oriented Programming\",
+          \"credits\": 4,
+          \"why\": \"Foundational course for understanding programming concepts.\"
+        },
+        {
+          \"code\": \"CSE 214\",
+          \"name\": \"Data Structures\",
+          \"credits\": 4,
+          \"why\": \"Critical for learning how to manage and manipulate data efficiently.\"
+        }
+      ],
+      \"projects\": [
+        {
+          \"name\": \"Build Your Own Redis\",
+          \"url\": \"https://build-your-own.org/redis\",
+          \"why\": \"Hands-on experience with in-memory data structures.\",
+          \"timeEstimate\": \"4-6 weeks\",
+          \"skills\": [\"Data storage\", \"Caching strategies\", \"Performance optimization\"]
+        }
+      ],
+      \"skills\": [\"Java\", \"Python\", \"SQL\"],
+      \"milestones\": [
+        \"Complete CSE 114 and CSE 214 with B+\",
+        \"Start networking for internships\"
+      ],
+      \"totalCredits\": 8
+    },
+    \"spring_2026\": {
+      \"courses\": [
+        {
+          \"code\": \"CSE 113\",
+          \"name\": \"Foundations of Computer Science I\",
+          \"credits\": 4,
+          \"why\": \"Essential for understanding the mathematical principles of computing.\"
+        },
+        {
+          \"code\": \"CSE 213\",
+          \"name\": \"Foundations of Computer Science II\",
+          \"credits\": 4,
+          \"why\": \"Continues the mathematical foundation necessary for advanced topics.\"
+        }
+      ],
+      \"projects\": [
+        {
+          \"name\": \"Build Your Own Web Server\",
+          \"url\": \"https://ruslanspivak.com/lsbaws-part1/\",
+          \"why\": \"Gain practical experience with HTTP and web protocols.\",
+          \"timeEstimate\": \"2-4 weeks\",
+          \"skills\": [\"HTTP protocol\", \"Routing\", \"Response generation\"]
+        }
+      ],
+      \"skills\": [\"Problem-solving\", \"Algorithms\", \"Version control\"],
+      \"milestones\": [
+        \"Complete CSE 113 and CSE 213 with B+\",
+        \"Apply for summer internships\"
+      ],
+      \"totalCredits\": 8
+    },
+    \"fall_2026\": {
+      \"courses\": [
+        {
+          \"code\": \"CSE 220\",
+          \"name\": \"Systems Fundamentals I\",
+          \"credits\": 4,
+          \"why\": \"Introduces systems-level programming and memory management.\"
+        },
+        {
+          \"code\": \"CSE 307\",
+          \"name\": \"Principles of Programming Languages\",
+          \"credits\": 3,
+          \"why\": \"Broadens understanding of different programming paradigms.\"
+        }
+      ],
+      \"projects\": [],
+      \"skills\": [\"C programming\", \"Assembly language\", \"Memory management\"],
+      \"milestones\": [
+        \"Complete CSE 220 and CSE 307 with B+\",
+        \"Start preparing for technical interviews\"
+      ],
+      \"totalCredits\": 7
+    },
+    \"spring_2027\": {
+      \"courses\": [
+        {
+          \"code\": \"CSE 316\",
+          \"name\": \"Fundamentals of Software Development\",
+          \"credits\": 3,
+          \"why\": \"Focuses on software design and development methodologies.\"
+        },
+        {
+          \"code\": \"CSE 214\",
+          \"name\": \"Data Structures\",
+          \"credits\": 4,
+          \"why\": \"Critical for learning how to manage and manipulate data efficiently.\"
+        }
+      ],
+      \"projects\": [
+        {
+          \"name\": \"Build Your Own Docker\",
+          \"url\": \"https://blog.lizzie.io/linux-containers-in-500-loc.html\",
+          \"why\": \"Learn about containerization and microservices.\",
+          \"timeEstimate\": \"3-5 weeks\",
+          \"skills\": [\"Containerization\", \"Microservices\", \"Resource management\"]
+        }
+      ],
+      \"skills\": [\"Software development\", \"Testing methodologies\", \"Agile practices\"],
+      \"milestones\": [
+        \"Complete CSE 316 with B+\",
+        \"Secure a summer internship\"
+      ],
+      \"totalCredits\": 7
+    },
+    \"fall_2027\": {
+      \"courses\": [
+        {
+          \"code\": \"CSE 320\",
+          \"name\": \"Systems Fundamentals II\",
+          \"credits\": 3,
+          \"why\": \"Continues systems programming with advanced topics.\"
+        },
+        {
+          \"code\": \"CSE 307\",
+          \"name\": \"Principles of Programming Languages\",
+          \"credits\": 3,
+          \"why\": \"Broadens understanding of different programming paradigms.\"
+        }
+      ],
+      \"projects\": [],
+      \"skills\": [\"Advanced C programming\", \"System architecture\", \"Debugging\"],
+      \"milestones\": [
+        \"Complete CSE 320 with B+\",
+        \"Prepare for fall internships\"
+      ],
+      \"totalCredits\": 6
+    },
+    \"spring_2028\": {
+      \"courses\": [
+        {
+          \"code\": \"CSE 220\",
+          \"name\": \"Systems Fundamentals I\",
+          \"credits\": 4,
+          \"why\": \"Introduces systems-level programming and memory management.\"
+        },
+        {
+          \"code\": \"CSE 316\",
+          \"name\": \"Fundamentals of Software Development\",
+          \"credits\": 3,
+          \"why\": \"Focuses on software design and development methodologies.\"
+        }
+      ],
+      \"projects\": [],
+      \"skills\": [\"API development\", \"Microservices architecture\", \"Cloud services\"],
+      \"milestones\": [
+        \"Complete CSE 220 and CSE 316 with B+\",
+        \"Apply for summer internships\"
+      ],
+      \"totalCredits\": 7
+    },
+    \"fall_2028\": {
+      \"courses\": [
+        {
+          \"code\": \"CSE 307\",
+          \"name\": \"Principles of Programming Languages\",
+          \"credits\": 3,
+          \"why\": \"Broadens understanding of different programming paradigms.\"
+        },
+        {
+          \"code\": \"CSE 316\",
+          \"name\": \"Fundamentals of Software Development\",
+          \"credits\": 3,
+          \"why\": \"Focuses on software design and development methodologies.\"
+        }
+      ],
+      \"projects\": [],
+      \"skills\": [\"Cloud computing\", \"Microservices\", \"Version control\"],
+      \"milestones\": [
+        \"Complete CSE 307 and CSE 316 with B+\",
+        \"Prepare for job applications\"
+      ],
+      \"totalCredits\": 6
+    },
+    \"spring_2029\": {
+      \"courses\": [],
+      \"projects\": [],
+      \"skills\": [],
+      \"milestones\": [
+        \"Graduate with a Bachelor's degree\",
+        \"Secure a full-time position as a Backend Software Engineer\"
+      ],
+      \"totalCredits\": 0
+    }
+  },
+  \"keyInsights\": [
+    \"Focus on foundational courses early to build a strong programming base.\",
+    \"Engage in hands-on projects to apply theoretical knowledge practically.\",
+    \"Internships are crucial for gaining real-world experience and networking.\"
+  ]
+}
+: << name: validated_roadmap, prompt: false >>" | cache: "true" }}=>{{ variable  | name: "final_result" }}
+<< name: final_result, prompt: false >>
+{{ extractCode  }}=>{{ variable  | name: "json" | mode: "" | value: "" }}
