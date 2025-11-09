@@ -128,18 +128,53 @@ function buildCoursesIndex(data) {
     .sort((a, b) => a.id.localeCompare(b.id));
 }
 
-export default function SideNav() {
+export default function SideNav({ excludeIds, onUnscheduleCourse }) {
   const [activeTab, setActiveTab] = useState('All Courses');
   const [expandedId, setExpandedId] = useState(null);
 
   const courses = useMemo(() => buildCoursesIndex(catalog), []);
+  const excluded = useMemo(() => new Set(excludeIds || []), [excludeIds]);
   const visible = useMemo(() => {
-    if (activeTab === 'All Courses') return courses;
-    return courses.filter(c => c.tabs.includes(activeTab));
-  }, [courses, activeTab]);
+    const base = activeTab === 'All Courses' ? courses : courses.filter(c => c.tabs.includes(activeTab));
+    // Hide courses that are already planned in any semester
+    return base.filter(c => !excluded.has(c.id));
+  }, [courses, activeTab, excluded]);
+
+  const [dragUnschedule, setDragUnschedule] = useState(false);
+
+  const handleDragOver = (e) => {
+    const raw = e.dataTransfer.getData('application/x-course');
+    // Even if raw not accessible yet, optimistically allow; we'll validate on drop.
+    e.preventDefault();
+    if (raw) {
+      try {
+        const payload = JSON.parse(raw);
+        setDragUnschedule(payload.source === 'semester');
+      } catch {
+        setDragUnschedule(false);
+      }
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const raw = e.dataTransfer.getData('application/x-course');
+    if (!raw) return;
+    try {
+      const payload = JSON.parse(raw);
+      if (payload.source === 'semester' && payload.fromSemId) {
+        onUnscheduleCourse?.(payload.fromSemId, payload.id);
+      }
+    } catch {}
+    setDragUnschedule(false);
+  };
 
   return (
-    <aside className="side-nav">
+    <aside
+      className={`side-nav${dragUnschedule ? ' drag-over-unschedule' : ''}`}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+    >
       {/* Search bar */}
       <div className="sn-search">
         <i className="bi bi-search" aria-hidden="true" />
@@ -169,8 +204,22 @@ export default function SideNav() {
       <div className="sn-course-list">
         {visible.map(c => {
           const isOpen = expandedId === c.id;
+          const dragPayload = JSON.stringify({
+            id: c.id,
+            name: c.name,
+            credits: (typeof c.credits === 'string' ? parseInt(c.credits) : c.credits) ?? 0
+          });
           return (
-            <article key={c.id} className="sn-card">
+            <article
+              key={c.id}
+              className="sn-card"
+              draggable
+              aria-grabbed={false}
+              onDragStart={(e) => {
+                e.dataTransfer.effectAllowed = 'copy';
+                e.dataTransfer.setData('application/x-course', dragPayload);
+              }}
+            >
               <div className="sn-card-left">
                 <i className="bi bi-grip-vertical" aria-hidden="true" />
               </div>

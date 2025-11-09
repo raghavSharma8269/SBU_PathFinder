@@ -29,6 +29,13 @@
 	min-height: 320px;
 }
 
+/* Visual feedback when dragging over a semester column */
+.sem-column.drag-over {
+	outline: 2px dashed #3b82f6;
+	outline-offset: 2px;
+	background: rgba(191, 219, 254, 0.35);
+}
+
 /* Stack columns on very narrow screens */
 @media (max-width: 600px) {
 	.sem-board {

@@ -8,7 +8,7 @@
         "description": "Introduction to the mathematical foundations of computer science. Topics include logic, proof techniques, and key concepts of mathematical structures such as sequences, sets, functions, relations, and graphs. Not for credit in addition to CSE 215.",
         "credits": 4,
         "SBCs": "None",
-  "requirements": "AMS 151 or MAT 125 or MAT 131 or level 6 on the mathematics placement examination",
+       "requirements": "AMS 151 or MAT 125 or MAT 131 or level 6 on the mathematics placement examination",
         "alternatives": "None",
         "restrictions": "None"
       },
@@ -19,7 +19,7 @@
         "description": "An introduction to procedural and object-oriented programming methodology. Covers program structure, conditional and iterative programming, procedures, arrays, object classes, encapsulation, inheritance, polymorphism, file I/O, and exceptions. Includes a required lab. This course has been designated as a High Demand/Controlled Access course.",
         "credits": 4,
         "SBCs": "TECH",
-  "requirements": "Level 5 or higher on the math placement exam. Advisory prerequisite: CSE 101, CSE 103, or ISE 108.",
+        "requirements": "Level 5 or higher on the math placement exam. Advisory prerequisite: CSE 101, CSE 103, or ISE 108.",
         "alternatives": "None",
         "restrictions": "None"
       },
@@ -30,7 +30,7 @@
         "description": "A continuation of CSE 113 covering mathematical foundations, counting techniques, graph theory, and finite automata.",
         "credits": 4,
         "SBCs": "None",
-  "requirements": "CSE 113 or CSE 215 or CSE 150; CSE major",
+        "requirements": "CSE 113 or CSE 215 or CSE 150; CSE major",
         "alternatives": "None",
         "restrictions": "CSE majors only"
       },
@@ -41,7 +41,7 @@
         "description": "Extension of programming methodology to data storage and manipulation on complex datasets. Covers stacks, queues, lists, binary trees, heaps, priority queues, balanced trees, graphs, recursion, and sorting/searching algorithms.",
         "credits": 4,
         "SBCs": "None",
-  "requirements": "C or higher in CSE 114",
+        "requirements": "C or higher in CSE 114",
         "alternatives": "None",
         "restrictions": "CSE majors only"
       },
@@ -52,7 +52,7 @@
         "description": "Introduces systems-level programming using C and assembly language. Covers data representation, instructions, control structures, memory management, pointers, function calls, linking/loading, and foundational computer architecture and networks.",
         "credits": 4,
         "SBCs": "None",
-  "requirements": "C or higher in CSE 214 or co-requisite CSE 260 and CSE major",
+        "requirements": "C or higher in CSE 214 or co-requisite CSE 260 and CSE major",
         "alternatives": "None",
         "restrictions": "CSE majors only"
       },
@@ -63,7 +63,7 @@
         "description": "Introduction to programming language paradigms including functional and logic programming. Covers scoping, binding, type systems, memory, and language implementation concepts such as parsing, semantic analysis, and code generation.",
         "credits": 3,
         "SBCs": "None",
-  "requirements": "C or higher in CSE 214, CSE 216, or CSE 260; CSE or DAS major",
+        "requirements": "C or higher in CSE 214, CSE 216, or CSE 260; CSE or DAS major",
         "alternatives": "None",
         "restrictions": "CSE or DAS majors only"
       },
@@ -74,7 +74,7 @@
         "description": "Introduction to systematic design, development, and testing of software systems, including event-driven programming, databases, secure computing principles, and version control. Students construct large, robust programs.",
         "credits": 3,
         "SBCs": "ESI, EXP+, SBS+, STEM+",
-  "requirements": "C or higher in CSE 216, CSE 260, or CSE 307; CSE major",
+        "requirements": "C or higher in CSE 216, CSE 260, or CSE 307; CSE major",
         "alternatives": "None",
         "restrictions": "CSE majors only"
       },
@@ -85,7 +85,7 @@
         "description": "Introduces operating systems, compilers, concurrency, and performance analysis. Focuses on APIs for interacting with an OS and memory management, error handling, and threaded programming.",
         "credits": 3,
         "SBCs": "None",
-  "requirements": "C or higher in CSE 220 and CSE major",
+        "requirements": "C or higher in CSE 220 and CSE major",
         "alternatives": "None",
         "restrictions": "CSE majors only"
       },
@@ -96,18 +96,18 @@
         "description": "Mathematical analysis of computer algorithms including searching, sorting, matrix multiplication, FFT, and graph algorithms. Covers time and space complexity, upper/lower/average-case analysis, and introduction to NP-completeness.",
         "credits": 3,
         "SBCs": "None",
-  "requirements": "C or higher in CSE 113 or CSE 150 or CSE 215 or MAT 200 or MAT 250; MAT 211 or AMS 210; CSE 214 or CSE 260; CSE or MAT or DAS major",
+        "requirements": "C or higher in CSE 113 or CSE 150 or CSE 215 or MAT 200 or MAT 250; MAT 211 or AMS 210; CSE 214 or CSE 260; CSE or MAT or DAS major",
         "alternatives": "None",
         "restrictions": "CSE, MAT, or DAS majors only"
       },
-      {
+      { 
         "id": "CSE356",
         "name": "Cloud Computing",
         "category": "Required Advanced Course",
         "description": "Focus on deploying and scaling modern online services, using mature technologies across distributed servers for high-availability systems.",
         "credits": 3,
         "SBCs": "EXP+",
-  "requirements": "C or higher in CSE 316 and CSE 320; CSE major",
+       "requirements": "C or higher in CSE 316 and CSE 320; CSE major",
         "alternatives": "CSE 416",
         "restrictions": "CSE majors only"
       },
@@ -118,13 +118,29 @@
         "description": "Introduction to software engineering concepts and tools. Covers requirements/specifications, design methodologies, implementation, integration, testing, project management, maintenance, and human factors.",
         "credits": 3,
         "SBCs": "ESI, EXP+, SBS+, STEM+",
-  "requirements": "C or higher in CSE 316; U4 standing; CSE major",
+        "requirements": "C or higher in CSE 316; U4 standing; CSE major",
         "alternatives": "CSE 356",
         "restrictions": "CSE majors only"
+      },
+      {
+        "id": "CSE 300",
+        "name": "Technical Communications",
+        "credits": 3,
+        "description": "Principles of professional technical communications for Computer Science and Information Systems majors. Topics include writing business communications, user manuals, press releases, literature reviews, and research abstracts. Persuasive oral communications and effective presentation techniques, to address a range of audiences, will also be covered. Satisfies the upper-division writing requirement for CSE and ISE majors.",
+        "prerequisites": "WRT 102; CSE or ISE or DAS major; U3 or U4 standing",
+        "SBC": ["SPK", "WRTD"]
+      },
+      {
+        "id": "CSE 312",
+        "name": "Social, Legal, and Ethical Issues in Computing",
+        "credits": 3,
+        "description": "This course deals with the impact of computers on individuals and society. Covers rapid changes in computing technology and its social, legal, and ethical implications that require critical examination.",
+        "prerequisites": "CSE, ISE or DAS major; U3 or U4 standing; one D.E.C. E or SNW course",
+        "offered": "Both CSE 312 and ISE 312",
+        "SBC": ["CER", "ESI", "STAS"]
       }
     ]
   },
-
   {
     "Specializations": [
       {

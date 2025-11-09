@@ -11,6 +11,13 @@
   font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
 }
 
+/* Highlight when a semester course is dragged over (unschedule target) */
+.side-nav.drag-over-unschedule {
+  background: #f0f9ff; /* light blue */
+  outline: 2px dashed #3b82f6;
+  outline-offset: -4px;
+}
+
 /* Search */
 .sn-search {
   display: flex;
@@ -80,6 +87,14 @@
 }
 .sn-card:hover {
   box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+/* Drag affordance */
+.sn-card[draggable="true"] {
+  cursor: grab;
+}
+.sn-card[draggable="true"]:active {
+  cursor: grabbing;
 }
 
 .sn-card-left i {

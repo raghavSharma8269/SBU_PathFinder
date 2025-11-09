@@ -54,6 +54,7 @@ export default function ContentHeader({
 
       <div className='content-header-right'>
         <div className="actions-group">
+          {/*
           <button
               type="button"
               className="btn btn-ghost"
@@ -62,6 +63,7 @@ export default function ContentHeader({
             <i className="bi bi-plus-lg" />
             <span>New Roadmap</span>
           </button>
+          */}
           <button
               type="button"
               className="btn btn-primary"
