@@ -21,7 +21,7 @@ export default function Portal() {
   // Lift semesters into state so drag & drop can mutate them
   const [semesters, setSemesters] = useState(() => initialSemesters);
 
-  // ADD THIS: State for roadmap title
+  // State for roadmap title
   const [roadmapTitle, setRoadmapTitle] = useState("Untitled Roadmap");
 
   // Persisted roadmap ID (saved in the backend). Read from localStorage if present.
@@ -37,7 +37,7 @@ export default function Portal() {
     const incoming = state.roadmap;
     if (!incoming) return;
 
-    // ADD THIS: Extract and set the title from the roadmap
+    // Extract and set the title from the roadmap
     if (incoming.title) {
       setRoadmapTitle(incoming.title);
     }
@@ -77,6 +77,18 @@ export default function Portal() {
 
     if (!semSource || typeof semSource !== "object") return null;
 
+    // Helper function to format semester names
+    const formatSemesterName = (semId) => {
+      if (!semId) return semId;
+      const parts = semId.split("_");
+      if (parts.length === 2) {
+        const season = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+        const year = parts[1];
+        return `${season} ${year}`;
+      }
+      return semId;
+    };
+
     const mapped = Object.entries(semSource).map(([key, val]) => {
       const courses = (val.courses || []).map((c, idx) => ({
         // keep a stable id for frontend lists
@@ -94,7 +106,7 @@ export default function Portal() {
 
       return {
         id: key,
-        title: key,
+        title: formatSemesterName(key), // Use formatted name
         courses,
         projects: val.projects || [],
         skills: val.skills || [],

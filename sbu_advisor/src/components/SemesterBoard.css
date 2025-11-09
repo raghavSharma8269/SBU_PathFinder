@@ -1,158 +1,229 @@
 /* Root theme variables */
 :root {
-	--card-bg: #fff;
-	--card-br: 12px;
-	--muted: #6b7280;
-	--border: #e5e7eb;
-	--good: #16a34a;
-	--bad: #dc2626;
-	--bg: transparent;
+  --card-bg: #fff;
+  --card-br: 12px;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --good: #16a34a;
+  --bad: #dc2626;
+  --bg: transparent;
+  --project-link: #3b82f6;
+  --project-link-hover: #2563eb;
 }
 
 /* Board layout */
 .sem-board {
-	display: grid;
-	/* Use clamp so cards can shrink a bit but not too far; auto-fill to preserve column slots */
-	grid-template-columns: repeat(auto-fill, minmax(clamp(220px, 28%, 320px), 1fr));
-	gap: 16px;
-	align-items: start;
-	width: 100%;
+  display: grid;
+  /* Use clamp so cards can shrink a bit but not too far; auto-fill to preserve column slots */
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(clamp(220px, 28%, 320px), 1fr)
+  );
+  gap: 16px;
+  align-items: start;
+  width: 100%;
 }
 
 /* Semester column */
 .sem-column {
-	background: rgba(255, 255, 255, 0.6);
-	backdrop-filter: saturate(120%) blur(2px);
-	border: 1px solid var(--border);
-	border-radius: 14px;
-	padding: 12px;
-	min-height: 320px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: saturate(120%) blur(2px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+  min-height: 320px;
 }
 
 /* Visual feedback when dragging over a semester column */
 .sem-column.drag-over {
-	outline: 2px dashed #3b82f6;
-	outline-offset: 2px;
-	background: rgba(191, 219, 254, 0.35);
+  outline: 2px dashed #3b82f6;
+  outline-offset: 2px;
+  background: rgba(191, 219, 254, 0.35);
 }
 
 /* Stack columns on very narrow screens */
 @media (max-width: 600px) {
-	.sem-board {
-		grid-template-columns: 1fr;
-	}
+  .sem-board {
+    grid-template-columns: 1fr;
+  }
 }
 
 .sem-column-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
 }
 
 .sem-title {
-	font-size: 14px;
-	font-weight: 600;
-	color: #111827;
-	margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
 }
 
 .sem-meta {
-	display: flex;
-	gap: 8px;
-	align-items: center;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 /* Badges */
 .badge {
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
-	font-size: 12px;
-	border-radius: 999px;
-	padding: 4px 8px;
-	border: 1px solid var(--border);
-	color: #111827;
-	background: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  border-radius: 999px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  color: #111827;
+  background: #fff;
 }
 
 .badge.credits {
-	background: #f8fafc;
+  background: #f8fafc;
 }
 
 .badge.status.good {
-	color: #065f46;
-	border-color: #d1fae5;
-	background: #ecfdf5;
+  color: #065f46;
+  border-color: #d1fae5;
+  background: #ecfdf5;
 }
 
 .badge.status.bad {
-	color: #7f1d1d;
-	border-color: #fee2e2;
-	background: #fef2f2;
+  color: #7f1d1d;
+  border-color: #fee2e2;
+  background: #fef2f2;
 }
 
 /* Courses list */
 .sem-course-stack {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-	margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
 }
 
 .course-card {
-	background: var(--card-bg);
-	border: 1px solid var(--border);
-	border-radius: var(--card-br);
-	overflow: hidden;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--card-br);
+  overflow: hidden;
 }
 
 .course-summary {
-	list-style: none;
-	display: flex;
-	gap: 10px;
-	align-items: flex-start;
-	padding: 10px;
-	cursor: default;
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px;
+  cursor: default;
 }
 
 .course-summary::-webkit-details-marker {
-	display: none;
+  display: none;
 }
 
 .drag-handle {
-	font-size: 16px;
-	color: #9ca3af;
-	line-height: 1;
-	padding: 2px 4px;
+  font-size: 16px;
+  color: #9ca3af;
+  line-height: 1;
+  padding: 2px 4px;
 }
 
 .course-main {
-	flex: 1;
-	min-width: 0;
+  flex: 1;
+  min-width: 0;
 }
 
 .course-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .course-code {
-	font-weight: 600;
-	color: #111827;
+  font-weight: 600;
+  color: #111827;
 }
 
 .course-credits {
-	font-size: 12px;
-	color: var(--muted);
-	border: 1px solid var(--border);
-	border-radius: 999px;
-	padding: 2px 6px;
+  font-size: 12px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 6px;
 }
 
 .course-name {
-	font-size: 13px;
-	color: #111827;
-	margin-top: 2px;
+  font-size: 13px;
+  color: #111827;
+  margin-top: 2px;
+}
+
+/* Projects divider line */
+.projects-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--border),
+    transparent
+  );
+  margin: 16px 0 12px 0;
+}
+
+/* Projects section */
+.projects-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Individual project card */
+.project-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--card-br);
+  padding: 10px;
+}
+
+/* Project name/title */
+.project-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+/* Project details (why, url, time) */
+.project-detail {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+
+.project-detail:last-child {
+  margin-bottom: 0;
+}
+
+/* Bold labels for Why, URL, Time Estimate */
+.project-label {
+  font-weight: 600;
+  color: #374151;
+}
+
+/* Project link styling */
+.project-link {
+  color: var(--project-link);
+  text-decoration: none;
+  word-break: break-all;
+  transition: color 0.2s ease;
+}
+
+.project-link:hover {
+  color: var(--project-link-hover);
+  text-decoration: underline;
 }
