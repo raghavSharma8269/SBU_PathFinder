@@ -6,46 +6,53 @@ import NewRoadMapModalComponent from "../components/NewRoadMapModalComponent";
 import HomePageDots from "../react_bits/HomePageDots";
 import { useNavigate } from "react-router-dom";
 
+// Import: Base URL for API calls to MongoDB
+const API_BASE_URL = "http://localhost:5001";
+
+// Home Page Component
 const HomePage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [roadmaps, setRoadmaps] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    // UseStates
+    const [isModalOpen, setIsModalOpen] = useState(false); // Represents if the new roadmap form is open
+    const [roadmaps, setRoadmaps] = useState([]); // Stores list of roadmaps locally, after being fetched from MongoDB
+    const [loading, setLoading] = useState(true); // Show's loading state while fetching roadmaps
+    const [error, setError] = useState(null); // Set's error message if fetching roadmaps fails
 
-  const navigate = useNavigate();
+    // Navigation Hook: Allow users to navigate to portal page
+    const navigate = useNavigate();
 
-  // Fetch all roadmaps
-  const fetchRoadmaps = async () => {
+    // Fetch all roadmaps via GET request to MongoDB
+    const fetchRoadmaps = async () => {
+        try {
+          setLoading(true);
+            const response = await axios.get(`${API_BASE_URL}/api/roadmaps`);
+
+          const formattedRoadmaps = response.data.map((roadmap) => ({
+            title: roadmap.title,
+            skills:
+            roadmap.formData?.skills ||
+            roadmap.form?.skills ||
+            "No skills listed",
+            _id: roadmap._id,
+          }));
+
+          setRoadmaps(formattedRoadmaps);
+          setError(null);
+        } catch (err) {
+            console.error("Error fetching roadmaps:", err);
+            setError("Failed to load roadmaps");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // When home page loads, fetch roadmaps
+    useEffect(() => {
+        fetchRoadmaps();
+    }, []);
+
+    const fetchRoadmapById = async (id) => {
     try {
-      setLoading(true);
-      const response = await axios.get("http://localhost:5001/api/roadmaps");
-
-      const formattedRoadmaps = response.data.map((roadmap) => ({
-        title: roadmap.title,
-        skills:
-          roadmap.formData?.skills ||
-          roadmap.form?.skills ||
-          "No skills listed",
-        _id: roadmap._id,
-      }));
-
-      setRoadmaps(formattedRoadmaps);
-      setError(null);
-    } catch (err) {
-      console.error("Error fetching roadmaps:", err);
-      setError("Failed to load roadmaps");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchRoadmaps();
-  }, []);
-
-  const fetchRoadmapById = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:5001/api/roadmaps/${id}`);
+      const response = await fetch(`${API_BASE_URL}/api/roadmaps/${id}`);
       if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
       navigate("/portal", { state: { roadmap: data } });
@@ -54,16 +61,16 @@ const HomePage = () => {
       console.error("Error fetching roadmap:", error);
       return null;
     }
-  };
+    };
 
-  const handleRoadmapCreated = (newRoadmap) => {
+    const handleRoadmapCreated = (newRoadmap) => {
     console.log("New roadmap created:", newRoadmap);
     if (newRoadmap && newRoadmap._id) {
       navigate("/portal", { state: { roadmap: newRoadmap } });
     }
-  };
+    };
 
-  return (
+    return (
     <div className="relative w-full min-h-screen flex flex-col items-center py-12 bg-white overflow-x-hidden">
       {/* Background Dots */}
       <div
@@ -193,7 +200,7 @@ const HomePage = () => {
         />
       )}
     </div>
-  );
+    );
 };
 
 export default HomePage;

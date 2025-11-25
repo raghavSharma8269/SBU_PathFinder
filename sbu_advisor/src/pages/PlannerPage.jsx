@@ -162,6 +162,9 @@ export default function Portal() {
     // API base - matches server/server.js (dev server runs on 5001)
     const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
+    // Debug: Using API base
+    console.log("API_BASE is set to:", API_BASE);
+
     try {
       // DEBUG: log payload before sending to server
       console.log("Saving roadmap payload:", roadmapPayload);
@@ -174,11 +177,12 @@ export default function Portal() {
         });
 
         if (!res.ok) {
-          const errBody = await res.json().catch(() => ({}));
-          throw new Error(errBody.error || `Update failed (${res.status})`);
+            const errBody = await res.json().catch(() => ({}));
+            throw new Error(errBody.error || `Update failed (${res.status})`);
         }
 
         const updated = await res.json();
+
 
         // Keep a local copy for quick reloads
         localStorage.setItem("roadmap", JSON.stringify(updated));
@@ -189,6 +193,7 @@ export default function Portal() {
         if (mapped) setSemesters(mapped);
         
         // Optionally notify user
+
         // eslint-disable-next-line no-alert
         alert("Roadmap updated successfully.");
       } else {
