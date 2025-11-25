@@ -43,7 +43,7 @@ An AI-powered web app that creates personalized, semester-by-semester academic p
 ```
 REACT_APP_NEURALSEEK_API_KEY=API_KEY_HERE
 REACT_APP_NEURALSEEK_URL=https://stagingapi.neuralseek.com/v1/instance_name
-VITE_API_URL=http://localhost:5000
+VITE_API_URL=http://localhost:5001
 ```
 
 3. **Install Dependencies:**
