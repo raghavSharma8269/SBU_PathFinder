@@ -168,7 +168,7 @@ export default function Portal() {
       if (roadmapId) {
         // Update existing roadmap
         const res = await fetch(`${API_BASE}/api/roadmaps/${roadmapId}`, {
-          method: "POST",
+          method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ roadmap: roadmapPayload }),
         });
@@ -179,42 +179,21 @@ export default function Portal() {
         }
 
         const updated = await res.json();
+
         // Keep a local copy for quick reloads
         localStorage.setItem("roadmap", JSON.stringify(updated));
         console.log("Roadmap updated:", updated);
+
         // Update UI: map backend semesters (object) -> frontend array shape
         const mapped = mapBackendSemestersToArray(updated);
         if (mapped) setSemesters(mapped);
+        
         // Optionally notify user
         // eslint-disable-next-line no-alert
         alert("Roadmap updated successfully.");
       } else {
-        // Create a new roadmap in the backend. Use a sensible title derived from the UI.
-        const title = roadmapTitle || "SWE Track - Full-Stack Development";
-        const res = await fetch(`${API_BASE}/api/roadmaps`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title, roadmap: roadmapPayload }),
-        });
-
-        if (!res.ok) {
-          const errBody = await res.json().catch(() => ({}));
-          throw new Error(errBody.error || `Create failed (${res.status})`);
-        }
-
-        const created = await res.json();
-        // Save returned id for future updates
-        if (created && created._id) {
-          setRoadmapId(created._id);
-          localStorage.setItem("roadmapId", created._id);
-        }
-        // Update UI from created document
-        localStorage.setItem("roadmap", JSON.stringify(created));
-        const mapped = mapBackendSemestersToArray(created);
-        if (mapped) setSemesters(mapped);
-        console.log("Roadmap created:", created);
         // eslint-disable-next-line no-alert
-        alert("Roadmap saved to server.");
+        alert("Error saving roadmap to server, invalid ID.");
       }
     } catch (err) {
       console.error("Failed to save roadmap:", err);

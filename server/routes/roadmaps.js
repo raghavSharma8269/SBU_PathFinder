@@ -104,7 +104,7 @@ router.post("/generate", async (req, res) => {
 
     // Extract and store JSON roadmap result
     const roadmapData = response.data.json;
-    console.log(roadmapData);
+    console.log("Roadmap Data:", roadmapData);
 
     const roadmap = new Roadmap({
       title: formData.targetRole,
@@ -121,6 +121,40 @@ router.post("/generate", async (req, res) => {
       err.response?.data || err.message
     );
     res.status(500).json({ error: "Failed to generate roadmap" });
+  }
+});
+
+// Update an existing roadmap by ID
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ error: "Invalid roadmap ID." });
+    }
+
+    const { title, roadmap, formData } = req.body;
+
+    if (!title && !roadmap && !formData) {
+      return res
+        .status(400)
+        .json({ error: "Nothing to update. Provide title, roadmap, or formData." });
+    }
+
+    const existing = await Roadmap.findById(id);
+    if (!existing) {
+      return res.status(404).json({ error: "Roadmap not found." });
+    }
+
+    if (title) existing.title = title;
+    if (roadmap) existing.roadmap = roadmap;
+    if (formData) existing.formData = formData;
+
+    const updated = await existing.save();
+    res.status(200).json(updated);
+  } catch (err) {
+    console.error("Failed to update roadmap:", err);
+    res.status(500).json({ error: "Failed to update roadmap." });
   }
 });
 
